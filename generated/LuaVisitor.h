@@ -81,6 +81,8 @@ public:
 
     virtual antlrcpp::Any visitFunctiondef(LuaParser::FunctiondefContext *context) = 0;
 
+    virtual antlrcpp::Any visitIvandef(LuaParser::IvandefContext *context) = 0;
+
     virtual antlrcpp::Any visitFuncbody(LuaParser::FuncbodyContext *context) = 0;
 
     virtual antlrcpp::Any visitParlist(LuaParser::ParlistContext *context) = 0;

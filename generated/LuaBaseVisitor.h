@@ -139,6 +139,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitIvandef(LuaParser::IvandefContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitFuncbody(LuaParser::FuncbodyContext *ctx) override {
     return visitChildren(ctx);
   }

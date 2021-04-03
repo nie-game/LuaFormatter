@@ -111,6 +111,7 @@ exp:
 	| ELLIPSIS
 	| prefixexp
 	| functiondef
+	| ivandef
 	| tableconstructor
 	| unaryOperator exp
 	| exp linkOperator exp;
@@ -128,6 +129,8 @@ nameAndArgs: (COLON NAME)? args;
 args: LP explist? RP | tableconstructor | string;
 
 functiondef: FUNCTION funcbody;
+
+ivandef: IVANMETHOD funcbody;
 
 funcbody: LP parlist? RP block END;
 
@@ -173,6 +176,7 @@ string: NORMALSTRING | CHARSTRING | LONGSTRING;
 // LEXER
 
 //keyword
+IVANMETHOD: 'ivanmethod';
 FUNCTION: 'function';
 RETURN: 'return';
 LOCAL: 'local';
@@ -209,7 +213,7 @@ RB: '}';
 LSB: '[';
 RSB: ']';
 
-NAME: [a-zA-Z_][a-zA-Z_0-9]*;
+NAME: [a-zA-Z_$][a-zA-Z_0-9]*;
 
 NORMALSTRING: '"' ( EscapeSequence | ~('\\' | '"'))* '"';
 

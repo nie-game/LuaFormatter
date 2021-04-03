@@ -92,46 +92,18 @@ file(GLOB_RECURSE yaml-cpp-src
 add_library (antlr4-cpp-runtime ${antlr4-cpp-src})
 add_library (yaml-cpp ${yaml-cpp-src})
 
-add_executable(lua-format ${src_dir} src/main.cpp)
+add_executable(ivan-format ${src_dir} src/main.cpp)
 
 if(WIN32)
   target_compile_definitions(antlr4-cpp-runtime PRIVATE ANTLR4CPP_EXPORTS)
   target_compile_definitions(yaml-cpp PRIVATE YAMLCPP_EXPORTS)
 endif()
 
-set_target_properties(lua-format PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(ivan-format PROPERTIES LINKER_LANGUAGE CXX)
 
-target_link_libraries(lua-format yaml-cpp antlr4-cpp-runtime ${extra-libs})
+target_link_libraries(ivan-format yaml-cpp antlr4-cpp-runtime ${extra-libs})
 
-install(TARGETS lua-format
+install(TARGETS ivan-format
   RUNTIME DESTINATION bin
   )
 
-if(BUILD_TESTS)
-  message("BUILD_TESTS enabled.")
-  enable_testing()
-
-  add_executable(lua-format-test
-    ${src_dir}
-    test/test.cpp
-    test/test_config.cpp
-    test/test_format_file.cpp
-    test/test_parser.cpp
-    test/test_args.cpp
-    test/test_validation.cpp
-    )
-  set_target_properties(lua-format-test PROPERTIES LINKER_LANGUAGE CXX)
-
-  if(COVERAGE AND CMAKE_BUILD_TYPE MATCHES "Debug")
-    message("COVERAGE enabled.")
-    set_target_properties(lua-format-test
-      PROPERTIES COMPILE_FLAGS "-fprofile-arcs -ftest-coverage ${CMAKE_CXX_FLAGS}"
-      LINK_FLAGS "-fprofile-arcs"
-      )
-  endif()
-
-  target_compile_definitions(lua-format-test PUBLIC PROJECT_PATH="${PROJECT_SOURCE_DIR}")
-  target_link_libraries(lua-format-test yaml-cpp antlr4-cpp-runtime ${extra-libs})
-
-  add_test(all_tests lua-format-test)
-endif()

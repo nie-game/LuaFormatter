@@ -1034,6 +1034,8 @@ antlrcpp::Any FormatVisitor::visitExp(LuaParser::ExpContext* ctx) {
         visitExp(ctx->exp().front());
     } else if (ctx->prefixexp() != nullptr) {
         visitPrefixexp(ctx->prefixexp());
+    } else if (ctx->ivandef() != nullptr) {
+        visitIvandef(ctx->ivandef());
     } else if (ctx->functiondef() != nullptr) {
         visitFunctiondef(ctx->functiondef());
     } else if (ctx->tableconstructor() != nullptr) {
@@ -1428,6 +1430,20 @@ antlrcpp::Any FormatVisitor::visitFunctiondef(LuaParser::FunctiondefContext* ctx
     LOG_FUNCTION_BEGIN();
     cur_writer() << ctx->FUNCTION()->getText();
     cur_writer() << commentAfter(ctx->FUNCTION(), "");
+    // disable indentForAlign_ in function body
+    int temp = indentForAlign_;
+    indentForAlign_ = 0;
+    visitFuncbody(ctx->funcbody());
+    indentForAlign_ = temp;
+    LOG_FUNCTION_END();
+    return nullptr;
+}
+
+// FUNCTION funcbody;
+antlrcpp::Any FormatVisitor::visitIvandef(LuaParser::IvandefContext* ctx) {
+    LOG_FUNCTION_BEGIN();
+    cur_writer() << ctx->IVANMETHOD()->getText();
+    cur_writer() << commentAfter(ctx->IVANMETHOD(), "");
     // disable indentForAlign_ in function body
     int temp = indentForAlign_;
     indentForAlign_ = 0;
